@@ -5,7 +5,9 @@ require_once(SYSTEM . 'functions.php');
 require_once(SYSTEM . 'init.php');
 require_once(SYSTEM . 'status.php');
 
-setSession('user_landed', true);
+$configLanding = require PLUGINS . 'landing-page/config.php';
+
+setcookie($configLanding['cookie_name'], '1', time() + ($configLanding['cookie_ttl']), '/');
 
 $base_url = str_replace('landing/', '', BASE_URL);
 ?>
@@ -17,7 +19,7 @@ $base_url = str_replace('landing/', '', BASE_URL);
 	<meta name="description" content="<?php echo $config['meta_description']; ?>">
 	<meta name="keywords" content="<?php echo $config['meta_keywords']; ?>, myaac, wodzaac">
 	<meta name="author" content="Jesse">
-	<meta name="generator" content="CSS">
+	<meta name="generator" content="MyAAC">
 	<link rel="stylesheet" href="basic.css" type="text/css">
 </head>
 <body>
@@ -29,15 +31,15 @@ $base_url = str_replace('landing/', '', BASE_URL);
 		<div id="wb_Text3" style="margin:0;padding:0;position:absolute;left:50%;top:35%;width:245px;height:30px;text-align:left;z-index:17;">
 		<font style="font-size:19px" color="#FFCC00" face="BRUSH SCRIPT MT"><b>Ip: <?php echo str_replace('/', '', str_replace(array('http://', 'https://'), '', $config['lua']['url'])); ?></b></font></div>
 		<div id="wb_Text4" style="margin:0;padding:0;position:absolute;left:50%;top:40%;width:177px;height:30px;text-align:left;z-index:18;">
-		<font style="font-size:19px" color="#FFCC00" face="BRUSH SCRIPT MT"><b>Port: <?php echo $config['lua']['loginPort']; ?></b></font></div>
+		<font style="font-size:19px" color="#FFCC00" face="BRUSH SCRIPT MT"><b>Port: <?php echo $config['lua']['loginProtocolPort'] ?? $config['lua']['loginPort'] ?? 7171; ?></b></font></div>
 		<div id="wb_Text5" style="margin:0;padding:0;position:absolute;left:50%;top:45%;width:239px;height:30px;text-align:left;z-index:19;">
 		<font style="font-size:19px" color="#FFCC00" face="BRUSH SCRIPT MT"><b>Server Status: </b></font><?php echo ($status['online'] ? '<font style="font-size:19px; color:#00FF00" face="Arial"><b>Online</b></font>' : '<font style="font-size:19px; color: red;"><b>Offline</b></font>'); ?></div>
 		<div id="wb_Text5" style="margin:0;padding:0;position:absolute;left:50%;top:53%;width:180px;height:30px;text-align:left;z-index:19;">
-		<font style="font-size:10px" color="#FF9900" face="Arial"><b>By clicking "Play Now" I agree to the Server Agreements</a>, the <a href="<?php echo $base_url; ?>?subtopic=rules" target="_blank" >Tibia Rules</a> and the Tibia Privacy Policy</a>.</b></font>
+		<font style="font-size:10px" color="#FF9900" face="Arial"><b>By clicking "Play Now" I agree to the Server
+				Agreements, the <a href="<?= getLink('rules'); ?>" target="_blank" >Tibia Rules</a> and the Tibia Privacy Policy.</b></font>
 		</div>
-		<div id="playnow"
-		style="margin:0;padding:0;position:absolute;left:47.5%;top:63%;width:158px;height:44px;text-align:left;z-index:20;">
-		<a href="<?php echo $base_url . ($config['friendly_urls'] ? '' : '?') . 'news'; ?>"><img src="images/playnow.png"></a></div>
+		<div id="playnow" style="margin:0;padding:0;position:absolute;left:47.5%;top:63%;width:158px;height:44px;text-align:left;z-index:20;">
+		<a href="<?php echo getLink('news'); ?>"><img src="images/playnow.png"></a></div>
 	</div>
 </body>
 </html>
